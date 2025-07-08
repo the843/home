@@ -9,17 +9,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+    <style>
+  body {
+    margin: 0;
+  }
+  .swiper {
+    width: 100%;
+    height: 400px; /* يمكنك تعديل الارتفاع */
+  }
+  @media (min-width: 768px) {
+    .swiper {
+      height: 800px; /* ارتفاع أكبر على الشاشات الكبيرة */
+    }
+  }
+  .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
     <style>
         :root {
-             --primary: #2c3278;
-            --primary-light: #cd323c;
-            --secondary: #faf5e4;
-            --accent: #45000e;
-            --light: #f8f9fa;
-            --text: #000000;
+            --primary: #2c3e50;
+            --primary-light: #3498db;
+            --secondary: #f1c40f;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #34495e;
             --white: #fff;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         
         * {
@@ -39,7 +63,7 @@
         h1, h2, h3, h4 {
             font-weight: 700;
             line-height: 1.3;
-            color: var(--accent);
+            color: var(--dark);
         }
         
         a {
@@ -62,30 +86,34 @@
         
         .btn {
             display: inline-block;
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
             color: var(--white);
             padding: 12px 30px;
             border-radius: 50px;
             font-weight: 500;
             transition: var(--transition);
-            border: 2px solid transparent;
+            border: none;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+            cursor: pointer;
         }
         
         .btn:hover {
-            background-color: var(--accent);
+            background: linear-gradient(135deg, var(--accent) 0%, #c0392b 100%);
             transform: translateY(-3px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
         }
         
         .btn-secondary {
-            background-color: transparent;
-            border-color: var(--white);
+            background: transparent;
+            border: 2px solid var(--white);
             color: var(--white);
+            box-shadow: none;
         }
         
         .btn-secondary:hover {
-            background-color: rgba(220, 10, 10, 0.601);
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
         }
         
         .section {
@@ -144,7 +172,8 @@
             width: 100%;
             height: 100%;
             display: flex;
-            transition: transform 1s ease-in-out;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            will-change: transform;
         }
         
         .header-slide {
@@ -154,6 +183,12 @@
             background-position: center;
             background-repeat: no-repeat;
             position: relative;
+            transition: opacity 0.8s ease;
+            opacity: 0;
+        }
+        
+        .header-slide.active {
+            opacity: 5;
         }
         
         .header-slide::before {
@@ -163,7 +198,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0, 68, 69, 0.066), rgba(0, 0, 0, 0.7));
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
         }
         
         .header-content {
@@ -184,7 +219,7 @@
             font-size: 1.2rem;
             margin-bottom: 2rem;
             opacity: 0.9;
-            color: var(--secondary);
+            color: var(--white);
         }
         
         .header-scroll {
@@ -194,6 +229,7 @@
             transform: translateX(-50%);
             animation: bounce 1s infinite;
             z-index: 2;
+            color: var(--white);
         }
         
         .header-dots {
@@ -229,10 +265,11 @@
             padding: 20px 0;
             z-index: 1000;
             transition: var(--transition);
+            background-color: rgba(44, 62, 80, 0.9);
         }
         
         .navbar.scrolled {
-            background-color: rgba(44, 120, 108, 0.95);
+            background-color: rgba(44, 62, 80, 0.95);
             padding: 15px 0;
             box-shadow: var(--shadow);
         }
@@ -304,11 +341,12 @@
             color: var(--white);
             font-size: 1.5rem;
             cursor: pointer;
+            z-index: 1001;
         }
         
         /* Hero Section */
         .hero {
-            background-color: var(--primary-light);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
             color: var(--white);
             padding: 80px 0;
             position: relative;
@@ -328,6 +366,7 @@
         .hero-title {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
+            color: var(--secondary);
         }
         
         .hero-text {
@@ -341,6 +380,12 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .hero-image:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
         
         /* Features */
@@ -366,7 +411,8 @@
         
         .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: var(--shadow);
+            background: linear-gradient(135deg, var(--white) 0%, var(--light) 100%);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
         
         .feature-icon {
@@ -378,12 +424,7 @@
         .feature-title {
             font-size: 1.5rem;
             margin-bottom: 15px;
-            color: #45000e;
-        }
-        .feature-title-p {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #45000e;
+            color: var(--dark);
         }
         
         /* Destinations */
@@ -409,13 +450,18 @@
         
         .destination-card:hover {
             transform: translateY(-10px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
         
         .destination-image {
             height: 250px;
             width: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .destination-card:hover .destination-image {
+            transform: scale(1.05);
         }
         
         .destination-content {
@@ -425,6 +471,7 @@
         .destination-title {
             font-size: 1.5rem;
             margin-bottom: 10px;
+            color: var(--dark);
         }
         
         .destination-meta {
@@ -437,7 +484,7 @@
         
         .destination-price {
             font-size: 1.3rem;
-            color: var(--text);
+            color: var(--accent);
             font-weight: 700;
         }
         
@@ -450,16 +497,17 @@
             top: 20px;
             right: 20px;
             background-color: var(--secondary);
-            color: var(--accent);
+            color: var(--dark);
             padding: 5px 15px;
             border-radius: 50px;
             font-weight: 700;
             font-size: 0.9rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
         
         /* Testimonials */
         .testimonials {
-            background: linear-gradient(rgba(0, 68, 69, 0.8), rgba(0, 68, 69, 0.8)), 
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.9) 0%, rgba(52, 73, 94, 0.9) 100%), 
                         url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
@@ -485,11 +533,13 @@
             border-radius: 10px;
             padding: 30px;
             transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .testimonial-card:hover {
             transform: translateY(-10px);
             background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
         
         .testimonial-text {
@@ -534,10 +584,29 @@
         
         /* CTA */
         .cta {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
             color: var(--white);
             text-align: center;
             padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(241, 196, 15, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: 1;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 2;
         }
         
         .cta-title {
@@ -549,6 +618,7 @@
             max-width: 700px;
             margin: 0 auto 2rem;
             font-size: 1.1rem;
+            opacity: 0.9;
         }
         
         /* About */
@@ -567,6 +637,12 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .about-image:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
         
         .about-content {
@@ -576,10 +652,12 @@
         .about-title {
             font-size: 2rem;
             margin-bottom: 1.5rem;
+            color: var(--dark);
         }
         
         .about-text {
             margin-bottom: 1.5rem;
+            color: var(--text);
         }
         
         .about-features {
@@ -622,7 +700,7 @@
         }
         
         .contact-icon {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
             color: var(--white);
             width: 50px;
             height: 50px;
@@ -633,11 +711,13 @@
             font-size: 1.2rem;
             margin-left: 20px;
             flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.2);
         }
         
         .contact-title {
             font-size: 1.2rem;
             margin-bottom: 5px;
+            color: var(--dark);
         }
         
         .contact-detail {
@@ -656,6 +736,7 @@
             font-weight: 500;
             transition: var(--transition);
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
         }
         
         .whatsapp-btn i {
@@ -666,7 +747,7 @@
         .whatsapp-btn:hover {
             background-color: #128C7E;
             transform: translateY(-3px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 8px 25px rgba(18, 140, 126, 0.4);
         }
         
         .contact-form {
@@ -693,7 +774,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(44, 120, 108, 0.2);
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
         }
         
         textarea.form-control {
@@ -703,7 +784,7 @@
         
         /* Footer */
         .footer {
-            background-color: var(--accent);
+            background: linear-gradient(135deg, var(--dark) 0%, #1a252f 100%);
             color: var(--white);
             padding: 80px 0 30px;
         }
@@ -720,6 +801,7 @@
             font-weight: 700;
             margin-bottom: 20px;
             display: block;
+            color: var(--white);
         }
         
         .footer-logo span {
@@ -745,11 +827,13 @@
             align-items: center;
             justify-content: center;
             transition: var(--transition);
+            color: var(--white);
         }
         
         .social-link:hover {
             background-color: var(--secondary);
-            color: var(--accent);
+            color: var(--dark);
+            transform: translateY(-3px);
         }
         
         .footer-title {
@@ -757,6 +841,7 @@
             margin-bottom: 20px;
             position: relative;
             padding-bottom: 10px;
+            color: var(--white);
         }
         
         .footer-title:after {
@@ -777,11 +862,13 @@
             margin-bottom: 10px;
             opacity: 0.8;
             transition: var(--transition);
+            color: var(--white);
         }
         
         .footer-link:hover {
             opacity: 1;
             padding-right: 5px;
+            color: var(--secondary);
         }
         
         .footer-bottom {
@@ -813,6 +900,15 @@
             }
             60% {
                 transform: translateY(-10px) translateX(-50%);
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
             }
         }
         
@@ -872,7 +968,6 @@
             
             .mobile-menu-btn {
                 display: block;
-                z-index: 1001;
             }
             
             .header-title {
@@ -912,7 +1007,7 @@
     <nav class="navbar">
         <div class="container navbar-container">
             <a href="#" class="logo">
-                <img src="./images/logo.png" alt="لوجو رحلات المتقاعدين" class="logo-img">
+                <img src="./logo.png" alt="لوجو رحلات المتقاعدين" class="logo-img">
                 <span class="logo-text">جمعية بلا حدود <span class="highlight">لتنمية والتنشيط السياحي</span></span>
             </a>
             
@@ -930,37 +1025,26 @@
         </div>
     </nav>
     
-   <!-- Header -->
-<header class="header" id="home">
-    <div class="header-slider">
-        <!-- الصورة الأولى -->
-        <div class="header-slide" style="background-image: url('https://travelplansmarrakech.com/wp-content/uploads/2024/03/2.jpg')"></div>
-        
-        <!-- الصورة الثانية -->
-        <div class="header-slide" style="background-image: url('https://www.barcelo.com/guia-turismo/wp-content/uploads/2022/01/tanger-chefchaouen-888.jpg')"></div>
-        
-        
-    </div>
-    
-    <div class="container">
-        <div class="header-content">
-            <h1 class="header-title">اكتشف جمال المغرب بوتيرة هادئة</h1>
-            <p class="header-subtitle">رحلات فاخرة مصممة خصيصًا للمتقاعدين، تجمع بين الراحة والمتعة والثقافة</p>
-            <a href="#destinations" class="btn">استكشف رحلاتنا</a>
-        </div>
-    </div>
-    
-    <div class="header-dots">
-        <div class="header-dot active" data-slide="2"></div>
-        <div class="header-dot" data-slide="1"></div>
-        <div class="header-dot" data-slide="2"></div>
-        <div class="header-dot" data-slide="3"></div>
-    </div>
-    
-    <a href="#features" class="header-scroll">
-        <i class="fas fa-chevron-down fa-2x"></i>
-    </a>
-</header>
+    <!-- Header -->
+    <div class="swiper">
+  <div class="swiper-wrapper">
+    <!-- الشرائح -->
+    <div class="swiper-slide"><img src="https://i.ibb.co/0RGqx48M/Whats-App-Image-2025-07-07-at-7-10-08-PM.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="https://i.ibb.co/spPN865t/4c7855fe-a408-4deb-9895-c110d44a9a14.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="https://www.naturallymorocco.co.uk/cms/destinations/8_6399d341002d4s_0.jpg?v=1686742378" alt=""></div>
+    <div class="swiper-slide"><img src="https://www.muchbetteradventures.com/magazine/content/images/2022/09/Chefchaouen-aerial.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="https://i.ibb.co/Wp7nZnQ6/1ba1fb3c-ed93-4a2c-8040-2ade3b286da5.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="https://www.kasbahdutoubkal.com/assets/img/travel/mek/marrakech-walls-and-atlas.jpg" alt=""></div>
+    <div class="swiper-slide"><img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/517409243.jpg?k=42473d7190b73590e35d9fd6ba5474d84bc1b5a6873f313ba926196995a32fe1&o=&hp=1" alt=""></div>
+  </div>
+
+  <!-- لو تحب نقاط التنقل -->
+  <div class="swiper-pagination"></div>
+
+  <!-- لو تحب أسهم -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
     
     <!-- Hero Section -->
     <section class="section hero">
@@ -1081,13 +1165,19 @@
                     </div>
                 </div>
                 
-                
-                
-                
-                
-               
-                
-               
+                <div class="destination-card">
+                    <span class="destination-tag">جديد</span>
+                    <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="الصحراء المغربية" class="destination-image">
+                    <div class="destination-content">
+                        <h3 class="destination-title">الصحراء المغربية</h3>
+                        <div class="destination-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 5 أيام</span>
+                            <span><i class="fas fa-users"></i> 15 شخص</span>
+                        </div>
+                        <p>تجربة لا تنسى في أحضان الصحراء مع رحلات الجمال ومبيت في الخيام الفاخرة تحت النجوم.</p>
+                        <div class="destination-price">3,200 درهم</div>
+                    </div>
+                </div>
             </div>
             
             <div class="text-center" style="margin-top: 50px;">
@@ -1191,7 +1281,7 @@
     
     <!-- CTA -->
     <section class="section cta">
-        <div class="container">
+        <div class="container cta-content">
             <h2 class="cta-title">جاهزون لرحلة العمر؟</h2>
             <p class="cta-text">اتصل بنا اليوم لمعرفة المزيد عن رحلاتنا القادمة واحجز مقعدك في تجربة سياحية لن تنساها</p>
             <a href="#contact" class="btn">تواصل معنا</a>
@@ -1270,8 +1360,8 @@
                     <a href="#" class="footer-logo">جمعية بلا حدود <span>لتنمية والتنشيط السياحي</span></a>
                     <p class="footer-text">نقدم تجارب سياحية فريدة للمتقاعدين المغاربة، مع التركيز على الراحة والأمان والاستمتاع بوتيرة هادئة.</p>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/profile.php?id=61555189616995" class="social-link"><i class="fab fa-facebook-f"></i>page</a>
-                         <a href="https://facebook.com/groups/1411702783018757/" class="social-link"><i class="fab fa-facebook-f"></i>group</a>
+                        <a href="https://www.facebook.com/profile.php?id=61555189616995" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://facebook.com/groups/1411702783018757/" class="social-link"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
                         <a href="https://youtube.com/@karimrabatvoyagaes?si=lZ1s48XJQDdQJt-Q" class="social-link"><i class="fab fa-youtube"></i></a>
                     </div>
@@ -1317,91 +1407,139 @@
         </div>
     </footer>
     
-   <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // العناصر الأساسية
-    const headerSlider = document.querySelector('.header-slider');
-    const slides = document.querySelectorAll('.header-slide');
-    const dots = document.querySelectorAll('.header-dot');
-    let currentIndex = 0;
-    let slideInterval;
-    const slideDuration = 3000; // 5 ثواني
-    
-    // تهيئة السلايدر
-    function initSlider() {
-        // تعيين العرض الدقيق لكل شريحة
-        slides.forEach(slide => {
-            slide.style.width = `${headerSlider.offsetWidth}px`;
-        });
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // العناصر الأساسية
+        const headerSlider = document.querySelector('.header-slider');
+        const slides = document.querySelectorAll('.header-slide');
+        const dots = document.querySelectorAll('.header-dot');
+        let currentIndex = 0;
+        let slideInterval;
+        const slideDuration = 5000; // 5 ثواني
         
-        // بدء التشغيل التلقائي
-        startAutoSlide();
+        // تهيئة السلايدر
+        function initSlider() {
+            // تعيين العرض الدقيق لكل شريحة
+            slides.forEach(slide => {
+                slide.style.width = `${headerSlider.offsetWidth}px`;
+            });
+            
+            // بدء التشغيل التلقائي
+            startAutoSlide();
+            
+            // إضافة أحداث للنقاط
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                    resetAutoSlide();
+                });
+            });
+            
+            // إيقاف التشغيل التلقائي عند التحويم
+            headerSlider.addEventListener('mouseenter', pauseAutoSlide);
+            headerSlider.addEventListener('mouseleave', startAutoSlide);
+        }
         
-        // إضافة أحداث للنقاط
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-                resetAutoSlide();
+        // الانتقال لشريحة محددة
+        function goToSlide(index) {
+            // التأكد من أن المؤشر ضمن الحدود
+            currentIndex = (index + slides.length) % slides.length;
+            
+            // إخفاء جميع الشرائح
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // إظهار الشريحة الحالية
+            slides[currentIndex].classList.add('active');
+            
+            // تحديث النقاط النشطة
+            updateDots();
+        }
+        
+        // تحديث النقاط
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+        
+        // التشغيل التلقائي
+        function startAutoSlide() {
+            slideInterval = setInterval(() => {
+                goToSlide(currentIndex + 1);
+            }, slideDuration);
+        }
+        
+        // إيقاف التشغيل التلقائي
+        function pauseAutoSlide() {
+            clearInterval(slideInterval);
+        }
+        
+        // إعادة تعيين التشغيل التلقائي
+        function resetAutoSlide() {
+            pauseAutoSlide();
+            startAutoSlide();
+        }
+        
+        // تهيئة السلايدر عند تحميل الصفحة
+        if (slides.length > 0) {
+            initSlider();
+        }
+        
+        // إعادة تهيئة السلايدر عند تغيير حجم النافذة
+        window.addEventListener('resize', () => {
+            slides.forEach(slide => {
+                slide.style.width = `${headerSlider.offsetWidth}px`;
             });
         });
         
-        // إيقاف التشغيل التلقائي عند التحويم
-        headerSlider.addEventListener('mouseenter', pauseAutoSlide);
-        headerSlider.addEventListener('mouseleave', startAutoSlide);
-    }
-    
-    // الانتقال لشريحة محددة
-    function goToSlide(index) {
-        // التأكد من أن المؤشر ضمن الحدود
-        currentIndex = (index + slides.length) % slides.length;
+        // القائمة المتنقلة
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
         
-        // حساب المسافة للتحريك
-        const translateX = -currentIndex * 100;
-        headerSlider.style.transform = `translateX(${translateX}%)`;
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
         
-        // تحديث النقاط النشطة
-        updateDots();
-    }
-    
-    // تحديث النقاط
-    function updateDots() {
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentIndex);
+        // إخفاء القائمة عند النقر على رابط
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
         });
-    }
-    
-    // التشغيل التلقائي
-    function startAutoSlide() {
-        pauseAutoSlide();
-        slideInterval = setInterval(() => {
-            goToSlide(currentIndex + 1);
-        }, slideDuration);
-    }
-    
-    // إيقاف التشغيل التلقائي
-    function pauseAutoSlide() {
-        clearInterval(slideInterval);
-    }
-    
-    // إعادة تعيين التشغيل التلقائي
-    function resetAutoSlide() {
-        pauseAutoSlide();
-        startAutoSlide();
-    }
-    
-    // تهيئة السلايدر عند تحميل الصفحة
-    if (slides.length > 0) {
-        initSlider();
-    }
-    
-    // إعادة تهيئة السلايدر عند تغيير حجم النافذة
-    window.addEventListener('resize', () => {
-        slides.forEach(slide => {
-            slide.style.width = `${headerSlider.offsetWidth}px`;
+        
+        // تأثير التمرير للنافبار
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
-        goToSlide(currentIndex);
     });
-});
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+  const swiper = new Swiper('.swiper', {
+    loop: true,                // يتحرك في حلقة
+    autoplay: {                // تلقائي
+      delay: 3000,             // 3 ثواني بين الصور
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
 </script>
 </body>
 </html>
